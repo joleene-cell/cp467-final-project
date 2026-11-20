@@ -26,7 +26,7 @@ SmartDoc 2015 Challenge 1 [1], from the author's release [2]. The full dataset
 has 24,889 frames from 150 videos. We kept every 40th frame (701 frames) and
 split by video, so no video is in both sets. Corners are annotated in every
 frame. The full dataset is not included, and it is only needed to rerun
-`split.py` and `make_subset.py`.
+`01_split.py` and `01_extract_subset.py`.
 
 ## Rules for the team
 
