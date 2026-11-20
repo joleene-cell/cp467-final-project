@@ -1,0 +1,6 @@
+## Data attribution
+The frames in images/frames/ are a 701-frame subset of the SmartDoc 2015
+Challenge 1 dataset [Burie et al., ICDAR 2015], taken from the prepared
+release by J. Chazalon (https://github.com/jchazalon/smartdoc15-ch1-dataset,
+v2.0.0), used under the MIT License (see images/LICENSE-smartdoc15-ch1.txt).
+Frames were selected by code/split.py (every 40th frame per video).
