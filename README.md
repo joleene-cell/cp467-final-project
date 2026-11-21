@@ -18,6 +18,7 @@ Run all scripts from inside `code/`, since paths use `../`.
 pip install -r requirements.txt
 cd code
 python3 utils.py
+python3 contour.py
 ```
 
 ## Data
@@ -40,8 +41,6 @@ The contour-based method is implemented in `code/contour.py`. It detects documen
 - Use polygon approximation to identify four-sided document candidates.
 - Return the detected corners in TL, TR, BR, BL order.
   The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
-  Run from `code/`:
-  python3 contour.py
 
 ## Rules for the team
 
