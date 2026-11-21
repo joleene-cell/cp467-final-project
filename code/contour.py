@@ -19,7 +19,7 @@ def detect_contour(img):
 
     for c in contours[:20]:
         a = cv2.contourArea(c)
-        if a < 0.10*img_area:
+        if a < 0.05*img_area:
             continue 
         p = cv2.arcLength(c, True)
 
