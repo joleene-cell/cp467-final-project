@@ -28,6 +28,21 @@ split by video, so no video is in both sets. Corners are annotated in every
 frame. The full dataset is not included, and it is only needed to rerun
 `01_split.py` and `01_extract_subset.py`.
 
+## Contour Method
+
+The contour-based method is implemented in `code/contour.py`. It detects document boundaries using the following steps:
+
+- Convert the image to grayscale and apply Gaussian blur to reduce noise.
+- Use Canny edge detection to identify strong edges.
+- Apply morphological closing to connect small gaps in the detected edges.
+- Find and sort contours by area.
+- Ignore contours smaller than 5% of the image area.
+- Use polygon approximation to identify four-sided document candidates.
+- Return the detected corners in TL, TR, BR, BL order.
+  The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
+  Run from `code/`:
+  python3 contour.py
+
 ## Rules for the team
 
 - Load data only through `utils.py`.
