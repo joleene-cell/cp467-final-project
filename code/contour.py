@@ -40,7 +40,7 @@ if __name__ == "__main__":
     out = Path("../output_images/contour")
     out.mkdir(parents=True, exist_ok=True)
     validation = load_split("validation")
-    sample = validation.sample(min(20, len(validation)), random_state=0)
+    sample = validation.sample(min(50, len(validation)), random_state=0)
     
     success = 0 
     fail = 0 
@@ -52,7 +52,6 @@ if __name__ == "__main__":
         if predicted is None:
             fail+=1
             print(f"{i}: no contour detected")
-            output = img.copy()
             output = draw_corners(output, gt, color =(0,0,255))
         else: 
             success+=1 
@@ -60,9 +59,10 @@ if __name__ == "__main__":
             output= draw_corners(img, gt, color=(0,0,255))
 
             output = draw_corners(output, predicted, color=(0,255,0))
+        cv2.imwrite(str(out/f"{i}_result.jpg"), output)
+        cv2.imwrite(str(out/f"{i}_edges.jpg"), edges)
     
-    cv2.imwrite(str(out/f"{i}_result.jpg"), output)
-    cv2.imwrite(str(out/f"{i}_edges.jpg"), edges)
+    
     print()
     print("Contour test finished")
     print("Sucessful: ", success)
