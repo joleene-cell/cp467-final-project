@@ -10,7 +10,7 @@ def detect_contour(img):
     edges = cv2.Canny(blur, 50, 150)        #detect edges
     k = np.ones((5,5), np.uint8)            # close small gaps in edges
 
-    edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, k, iterations= 2)
+    edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, k, iterations= 3)
 
     contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)   #find contours
     contours = sorted(contours, key = cv2.contourArea, reverse=True)        #look at larger contours first 
