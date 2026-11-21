@@ -52,7 +52,7 @@ if __name__ == "__main__":
         if predicted is None:
             fail+=1
             print(f"{i}: no contour detected")
-            output = draw_corners(output, gt, color =(0,0,255))
+            output = draw_corners(img, gt, color =(0,0,255))
         else: 
             success+=1 
             print(f"{i}: contour detected")
