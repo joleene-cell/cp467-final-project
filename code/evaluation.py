@@ -4,6 +4,8 @@ import time
 from contour import detect_contour
 import pandas as pd
 from utils import load_frame, gt_corners, load_split
+from hough import detect_hough
+
 
 #### finding the actual distance between the predicted document corners and actual corners
 
@@ -127,7 +129,7 @@ success_rate = (detected_it / total_images) * 100
 
 
 ####### Show finding results 
-print("\n=== SmartDoc Validation Results ====")
+print("\n=== SmartDoc Validation Results Contour Method ====")
 print("Total Images: ",total_images)
 print("Successful Detections: ", detected_it)
 print("Non-successful Detections: ", nothing_here)
@@ -135,3 +137,64 @@ print("Success Rate of Detections: ", success_rate, "%")
 print("Difference of Corners: ", average_cornerDiff, "PIXELS")
 print("Average IoU: ", average_iou)
 print("Average Runtime: ", average_elapsedTime, "SECONDS")
+
+
+
+
+########## completing evaluation for hough method 
+
+######### creating arrays to store the results 
+
+hough_corner_sum = []
+hough_elapsedTime = []
+hough_iouScores = []
+
+####### count the successful and non successful detections
+hough_found = 0
+hough_nothing_here = 0 
+
+######## going through every image in the dataset 
+for index, row in validation.iterrows():
+    image, scale = load_frame(row)
+    actual_corners = gt_corners(row, scale)
+
+########## measuring how long hough detection runs for 
+    result, elapsed = record_runtime(detect_hough, image)
+    predicted_corners, edges = result 
+
+############ calculating how well contour detection is performing 
+    corner_difference = calculate_corner_difference(predicted_corners, actual_corners)
+
+    iou = IoU_calculation(predicted_corners, actual_corners, image.shape)
+
+########### storing the results   
+    hough_corner_sum.append(corner_difference)
+    hough_iouScores.append(iou)
+    hough_elapsedTime.append(elapsed)
+
+######## counter for number of successful and non successful detections
+    if predicted_corners is None:
+        hough_nothing_here += 1
+    else:
+        hough_found += 1
+    print("Hough Processed Image: ", index + 1)
+
+
+
+######### calculation of results afer successful run
+complete_hough = hough_found + hough_nothing_here
+hough_success_rate = (hough_found / complete_hough) * 100
+hough_average_iou = np.mean(hough_iouScores)
+hough_average_elapsedTime = np.mean(hough_elapsedTime)
+hough_average_cornerDiff = (np.nanmean(hough_corner_sum) if hough_found > 0 else np.nan)
+
+####### Show finding results 
+
+print("\n=== Hough Validation Results ====")
+print("Total Images: ",complete_hough)
+print("Successful Detections: ", hough_found)
+print("Non-successful Detections: ", hough_nothing_here)
+print("Success Rate of Detections: ", hough_success_rate, "%")
+print("Difference of Corners: ", hough_average_cornerDiff, "PIXELS")
+print("Average IoU: ", hough_average_iou)
+print("Average Runtime: ", hough_average_elapsedTime, "SECONDS")
