@@ -19,6 +19,7 @@ pip install -r requirements.txt
 cd code
 python3 utils.py
 python3 contour.py
+python3 hough.py
 ```
 
 ## Data
@@ -41,6 +42,21 @@ The contour-based method is implemented in `code/contour.py`. It detects documen
 - Use polygon approximation to identify four-sided document candidates.
 - Return the detected corners in TL, TR, BR, BL order.
   The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
+
+## Hough Method
+
+The Hough-based method is implemented in `code/hough.py`. It detects document boundaries using the following steps:
+
+- Convert the image to grayscale and apply Gaussian blur to reduce noise.
+- Use Canny edge detection to identify strong edges.
+- Apply morphological closing to connect small gaps in detected edges.
+- Use the probabilistic Hough line transform to detect straight line segments.
+- Filter and merge line segments that belong to the same document edge.
+- Group lines by similar orientations and identify approximately perpendicular pairs of document edges.
+- Calculate intersections between the selected lines to estimate the four document corners.
+- Score candidate quadrilaterals based on their geometry, edge support, and coverage to select the most suitable document boundary.
+- Return the detected corners in TL, TR, BR, BL order.
+The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
 
 ## Rules for the team
 
