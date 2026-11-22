@@ -209,9 +209,6 @@ def edge_support(edge_distance, p1, p2, max_distance=2.5):
     if length < 10:
         return 0.0
 
-    # 40 samples are enough to determine whether a long straight boundary
-    # is actually supported by the Canny edge image. This replaces the old
-    # Python loop over every pixel and is much faster.
     n = min(80, max(30, int(length / 8)))
     points = np.linspace(p1, p2, n)
     xs = np.clip(np.rint(points[:, 0]).astype(np.int32), 0, edge_distance.shape[1] - 1)
@@ -274,15 +271,7 @@ def score_quad(corners, boundary_lines, edge_distance):
         coverages.append(coverage)
         supports.append(support)
 
-    # ------------------------------------------------------------------
-    # IMPORTANT: prefer the OUTER document boundary.
-    #
-    # A common failure is:
-    #   left/right document borders + an internal horizontal table line.
-    #
-    # That creates a perfectly valid smaller rectangle, so area and line
-    # separation need to be strong parts of the score.
-    # ------------------------------------------------------------------
+   
     opposite_sep_1 = line_distance(boundary_lines[0], boundary_lines[2])
     opposite_sep_2 = line_distance(boundary_lines[1], boundary_lines[3])
 
