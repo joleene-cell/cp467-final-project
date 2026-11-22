@@ -338,7 +338,7 @@ def detect_hough(img):
         return None, edges
 
     lines = []
-    for x1, y1, x2, y2 in raw[:, 0]:
+    for x1, y1, x2, y2 in raw.reshape(-1, 4):
         line = line_from_segment(x1, y1, x2, y2)
         if line is not None:
             if not touches_border(line, img.shape):
