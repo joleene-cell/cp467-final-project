@@ -9,6 +9,7 @@ a document in smartphone frames.
 - `splits/`: `validation.csv` (221 frames) and `test.csv` (480 frames)
 - `images/frames/`: 701 frames from SmartDoc 2015 Challenge 1
 - `output_images/`: annotation check and detection results
+- `results/`: experiment results, tables, figures, and analysis
 
 ## How to run
 
@@ -20,6 +21,8 @@ cd code
 python3 utils.py
 python3 contour.py
 python3 hough.py
+python3 evaluation.py
+python3 experiments.py
 ```
 
 ## Data
@@ -56,7 +59,28 @@ The Hough-based method is implemented in `code/hough.py`. It detects document bo
 - Calculate intersections between the selected lines to estimate the four document corners.
 - Score candidate quadrilaterals based on their geometry, edge support, and coverage to select the most suitable document boundary.
 - Return the detected corners in TL, TR, BR, BL order.
-The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
+  The method was tuned using only the validation split. Qualitative outputs are saved as edge images and result images, where red represents the ground-truth boundary and green represents the predicted document boundary.
+
+## Evaluation
+
+The evaluation is implemented in `code/evaluation.py` and is used to measure the performance of the document corner detection methods. The evaluation includes:
+
+- Intersection over Union (IoU) between the predicted and ground-truth document boundaries.
+- Corner error based on the distance between predicted and ground-truth corners.
+- Runtime measurement for each detection method.
+  These metrics are used to compare the performance of the contour-based and Hough-based approaches
+
+## Experiments
+
+The experiment workflow is implemented in `code/experiments.py`. It runs both the contour and Hough detection methods on a selected dataset split and evaluates their results.
+The script:
+
+- Runs both detection methods on each frame.
+- Records detection success, IoU, corner error, and runtime.
+- Generates comparison tables and figures.
+- Produces breakdowns and failure analysis for the results.
+- Saves experiment outputs in the results/ directory.
+  Experiments are first run on the validation split for development and tuning. The test split is reserved for the final evaluation.
 
 ## Rules for the team
 
